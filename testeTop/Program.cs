@@ -167,6 +167,11 @@ namespace testeTop
         public void Stop()
         {
 
+            var processes = Process.GetProcessesByName("testeTop");
+            foreach (var p in processes)
+            p.Kill();
+
+
             _cancellationTokenSource.Cancel();
             _cancellationTokenSource.Dispose();
         }
