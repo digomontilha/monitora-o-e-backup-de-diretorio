@@ -1,3 +1,3 @@
-# monitora-o-e-backup-de-diretorio
-aplicação monitora arquivo e realiza backup e certa hora e futuro enviar ftp
+# monitora-backup-diretorio
+aplicação monitora um diretorio e realiza backup e certa hora e enviar o arquivo via ftp
 Utiliza o Topshelf https://topshelf.readthedocs.io/en/latest/index.html
