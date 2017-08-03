@@ -16,20 +16,20 @@ namespace testeTop
         {
            
 
-            HostFactory.Run(x =>                                 //1
+            HostFactory.Run(x =>                                 
             {
-                x.Service<TownCrier>(s =>                        //2
+                x.Service<TownCrier>(s =>                        
                 {
-                    s.ConstructUsing(name => new TownCrier());     //3
-                    s.WhenStarted(tc => tc.Start());              //4
-                    s.WhenStopped(tc => tc.Stop());               //5
+                    s.ConstructUsing(name => new TownCrier());   
+                    s.WhenStarted(tc => tc.Start());             
+                    s.WhenStopped(tc => tc.Stop());              
                 });
-                x.RunAsLocalSystem();                            //6
+                x.RunAsLocalSystem();                            
 
-                x.SetDescription("Sample Topshelf Host");        //7
-                x.SetDisplayName("Stuff");                       //8
-                x.SetServiceName("Stuff");                       //9
-            });
+                x.SetDescription("Monitoração de pasta e envio via ftp");        
+                x.SetDisplayName("Montirar");                       
+                x.SetServiceName("Montirar");                       
+            });                                                       
 
         }
     }
@@ -76,15 +76,22 @@ namespace testeTop
 
             //Verificar arquivo e enviar para ftp
             //Upload de arquivo as 23:00
-            string Horario_determinado = "23:00";
-            string Horario_atual = DateTime.Now.ToString("h:mm");
+            FileInfo arquivo = new FileInfo(pathFiles);
 
-            if (Horario_determinado == Horario_atual)
+            while (arquivo.Exists == true)
             {
-                EnviarArquivoFtp("serve", "TheUserName", "ThePassword", @"C:\file.txt");
+            string nomeArquivo = arquivo.FullName;              
+            string horarioDeterminado = "23:00";
+            string horarioAtual = DateTime.Now.ToString("h:mm");
+
+            if (horarioDeterminado == horarioAtual)
+            {
+                    EnviarArquivoFtp("serve", "TheUserName", "ThePassword", pathFiles+nomeArquivo);
+                    arquivo.MoveTo(pathFiles + @"\backup");
+
             }
 
-
+            }
         }
 
 
