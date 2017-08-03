@@ -72,17 +72,22 @@ namespace testeTop
             //Ativando eventos
             Monitorar.EnableRaisingEvents = true;
 
-           
 
             /*Verificar arquivo e enviar para ftp
             Upload de arquivo as 23:00
             Verificar data do servidor*/
+            string horarioDeterminado = "14:35";
+            string horarioAtual = DateTime.Now.ToString("H:mm");
+
             while (true)
             {
-                
-                string horarioDeterminado = "14:35";
-                string horarioAtual = DateTime.Now.ToString("H:mm");
                 Console.WriteLine(horarioAtual);
+
+                if (false == File.Exists(pathFiles + @"\backup"))
+                {
+                    // This path is a file
+                    Directory.CreateDirectory(pathFiles + @"\backup");
+                }
 
                 while (horarioDeterminado == horarioAtual)
                  {
