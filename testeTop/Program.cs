@@ -90,7 +90,7 @@ namespace testeTop
                         
                         
                         string file = Path.GetFileName(item);
-                        string arquivoDestino = pathFiles + @"\backup\" +DateTime.Now.ToString("ddmmhhmmss") + file;
+                        string arquivoDestino = pathFiles + @"\backup\" +DateTime.Now.ToString("ddMM-Hmmss") + file;
                         Console.WriteLine(item);
                         Console.WriteLine(file);
                         Console.WriteLine(arquivoDestino);
