@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -43,10 +44,13 @@ namespace testeTop
         {
             _cancellationTokenSource = new CancellationTokenSource();
         }
+       
 
-    public void MetMonitorar()
+        public void MetMonitorar()
         {
+
             
+
             //pasta com os arquivos a serem verificados
             string pathFiles = @"C:\LOG";
             Console.WriteLine(pathFiles);
@@ -151,21 +155,20 @@ namespace testeTop
 
         }
 
-        public void Start() {
+        public void Start()
+        {
 
             MetMonitorar();
-            
-
 
         }
 
        
 
-        public void Stop() {
+        public void Stop()
+        {
+
             _cancellationTokenSource.Cancel();
             _cancellationTokenSource.Dispose();
-            
-
         }
 
        
