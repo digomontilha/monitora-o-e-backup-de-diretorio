@@ -37,14 +37,14 @@ namespace testeTop
     
     public class TownCrier
     {
-              
 
+        private readonly CancellationTokenSource _cancellationTokenSource;
         public TownCrier()
         {
-            
+            _cancellationTokenSource = new CancellationTokenSource();
         }
 
-        public void MetMonitorar()
+    public void MetMonitorar()
         {
             
             //pasta com os arquivos a serem verificados
@@ -72,10 +72,12 @@ namespace testeTop
             //Ativando eventos
             Monitorar.EnableRaisingEvents = true;
 
+           
+
             /*Verificar arquivo e enviar para ftp
             Upload de arquivo as 23:00
             Verificar data do servidor*/
-            while(true)
+            while (true)
             {
                 
                 string horarioDeterminado = "14:35";
@@ -145,12 +147,18 @@ namespace testeTop
         }
 
         public void Start() {
-            MetMonitorar();
 
+            MetMonitorar();
             
 
+
         }
+
+       
+
         public void Stop() {
+            _cancellationTokenSource.Cancel();
+            _cancellationTokenSource.Dispose();
             
 
         }
