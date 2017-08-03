@@ -72,21 +72,15 @@ namespace testeTop
             //Ativando eventos
             Monitorar.EnableRaisingEvents = true;
 
-            //Verificar arquivo e enviar para ftp
-            //Upload de arquivo as 23:00
-            
-            
-           
-            
-            
-            //Verificar data do servidor
-            
-
+            /*Verificar arquivo e enviar para ftp
+            Upload de arquivo as 23:00
+            Verificar data do servidor*/
             while(true)
             {
-                Console.WriteLine(DateTime.Now);
-                string horarioDeterminado = "12:23";
-                string horarioAtual = DateTime.Now.ToString("h:mm");
+                
+                string horarioDeterminado = "14:35";
+                string horarioAtual = DateTime.Now.ToString("H:mm");
+                Console.WriteLine(horarioAtual);
 
                 while (horarioDeterminado == horarioAtual)
                  {
@@ -94,20 +88,23 @@ namespace testeTop
                     foreach (var item in nomeArquivo)
                      {
                         
-                        FileInfo arquivo = new FileInfo(item);
+                        
                         string file = Path.GetFileName(item);
-                        string arquivoDestino = pathFiles + @"\backup\" + file;
+                        string arquivoDestino = pathFiles + @"\backup\" +DateTime.Now.ToString("ddmmhhmmss") + file;
                         Console.WriteLine(item);
                         Console.WriteLine(file);
                         Console.WriteLine(arquivoDestino);
                         //EnviarArquivoFtp("ftp://172.", "TheUserName", "ThePassword", item);
-                        arquivo.MoveTo(arquivoDestino);
+                        File.Move(item, arquivoDestino);
 
+                        StreamWriter escrever = new StreamWriter("backup.log", true);
+                        escrever.WriteLine(@"arquivo movido para backup: {0} renomeado para: {1}", item ,arquivoDestino);
+                        escrever.Close();
 
                     }
 
                 }
-                Thread.Sleep(20000);
+                Thread.Sleep(2000);
             }
         }
 
@@ -115,8 +112,6 @@ namespace testeTop
         private static void OnChanged(object source, FileSystemEventArgs e)
         {
             StreamWriter escrever = new StreamWriter("log.log", true);
-           
-
             Console.WriteLine(@"Arquivo: {0}, Evento: {1}, Data: {2}", e.FullPath, e.ChangeType, DateTime.Now);
             escrever.WriteLine(@"Arquivo: {0}, Evento: {1}, Data: {2}", e.FullPath, e.ChangeType, DateTime.Now);
             escrever.Close();
@@ -156,8 +151,7 @@ namespace testeTop
 
         }
         public void Stop() {
-
-                 
+            
 
         }
 
