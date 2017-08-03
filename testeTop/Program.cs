@@ -37,18 +37,16 @@ namespace testeTop
     
     public class TownCrier
     {
-        readonly System.Timers.Timer _timer;
+              
+
         public TownCrier()
         {
-            //_timer = new System.Timers.Timer(100) { AutoReset = true };
-            //_timer.Elapsed += (sender, eventArgs) => MetMonitorar();
-
-            //MetMonitorar();
+            
         }
 
         public void MetMonitorar()
         {
-
+            
             //pasta com os arquivos a serem verificados
             string pathFiles = @"C:\LOG";
             Console.WriteLine(pathFiles);
@@ -76,21 +74,40 @@ namespace testeTop
 
             //Verificar arquivo e enviar para ftp
             //Upload de arquivo as 23:00
-            FileInfo arquivo = new FileInfo(pathFiles);
+            
+            
+           
+            
+            
+            //Verificar data do servidor
+            
 
-            while (arquivo.Exists == true)
+            while(true)
             {
-            string nomeArquivo = arquivo.FullName;              
-            string horarioDeterminado = "23:00";
-            string horarioAtual = DateTime.Now.ToString("h:mm");
+                Console.WriteLine(DateTime.Now);
+                string horarioDeterminado = "12:23";
+                string horarioAtual = DateTime.Now.ToString("h:mm");
 
-            if (horarioDeterminado == horarioAtual)
-            {
-                    EnviarArquivoFtp("serve", "TheUserName", "ThePassword", pathFiles+nomeArquivo);
-                    arquivo.MoveTo(pathFiles + @"\backup");
+                while (horarioDeterminado == horarioAtual)
+                 {
+                    string[] nomeArquivo = Directory.GetFiles(pathFiles);
+                    foreach (var item in nomeArquivo)
+                     {
+                        
+                        FileInfo arquivo = new FileInfo(item);
+                        string file = Path.GetFileName(item);
+                        string arquivoDestino = pathFiles + @"\backup\" + file;
+                        Console.WriteLine(item);
+                        Console.WriteLine(file);
+                        Console.WriteLine(arquivoDestino);
+                        //EnviarArquivoFtp("ftp://172.", "TheUserName", "ThePassword", item);
+                        arquivo.MoveTo(arquivoDestino);
 
-            }
 
+                    }
+
+                }
+                Thread.Sleep(20000);
             }
         }
 
