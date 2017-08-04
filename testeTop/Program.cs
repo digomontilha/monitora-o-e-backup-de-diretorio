@@ -81,19 +81,20 @@ namespace testeTop
             Upload de arquivo as 23:00
             Verificar data do servidor*/
             string horarioDeterminado = "14:35";
-            string horarioAtual = DateTime.Now.ToString("H:mm");
+            
 
             while (true)
             {
-                Console.WriteLine(horarioAtual);
+                Console.WriteLine(DateTime.Now.ToString("H:mm"));
 
+                //verificar se pastas backup existe
                 if (false == File.Exists(pathFiles + @"\backup"))
                 {
-                    // This path is a file
+                    // cria a pasta backup
                     Directory.CreateDirectory(pathFiles + @"\backup");
                 }
 
-                while (horarioDeterminado == horarioAtual)
+                while (horarioDeterminado == DateTime.Now.ToString("H:mm"))
                  {
                     string[] nomeArquivo = Directory.GetFiles(pathFiles);
                     foreach (var item in nomeArquivo)
@@ -115,7 +116,7 @@ namespace testeTop
                     }
 
                 }
-                Thread.Sleep(2000);
+                Thread.Sleep(30000);
             }
         }
 
@@ -123,8 +124,8 @@ namespace testeTop
         private static void OnChanged(object source, FileSystemEventArgs e)
         {
             StreamWriter escrever = new StreamWriter("log.log", true);
-            Console.WriteLine(@"Arquivo: {0}, Evento: {1}, Data: {2}", e.FullPath, e.ChangeType, DateTime.Now);
-            escrever.WriteLine(@"Arquivo: {0}, Evento: {1}, Data: {2}", e.FullPath, e.ChangeType, DateTime.Now);
+            Console.WriteLine(@"Arquivo: {0}, Evento: {1}, Data: {2}", e.FullPath, e.ChangeType, DateTime.Now.ToString("dd-MM/H:mm"));
+            escrever.WriteLine(@"Arquivo: {0}, Evento: {1}, Data: {2}", e.FullPath, e.ChangeType, DateTime.Now.ToString("dd-MM/H:mm"));
             escrever.Close();
 
         }
@@ -134,8 +135,8 @@ namespace testeTop
            StreamWriter escrever = new StreamWriter("log.log", true);
            
 
-           Console.WriteLine(@"Arquivo: {0} alterou para {1}, Data:{2}", e.OldFullPath, e.FullPath, DateTime.Now);
-           escrever.WriteLine(@"Arquivo: {0} alterou para {1}, Data:{2}", e.OldFullPath, e.FullPath, DateTime.Now);
+           Console.WriteLine(@"Arquivo: {0} alterou para {1}, Data:{2}", e.OldFullPath, e.FullPath, DateTime.Now.ToString("dd-MM/H:mm"));
+           escrever.WriteLine(@"Arquivo: {0} alterou para {1}, Data:{2}", e.OldFullPath, e.FullPath, DateTime.Now.ToString("dd-MM/H:mm"));
            escrever.Close();
         }
 
@@ -147,10 +148,10 @@ namespace testeTop
                 client.Credentials = new System.Net.NetworkCredential(userName, password);
                 client.UploadFile(ftpServer + "/" + new FileInfo(filename).Name, "STOR", filename);
                 StreamWriter writer = new StreamWriter("arquivos.log", true);
-                DateTime data = DateTime.Now;
+              
 
-                Console.WriteLine(@"Upload de Arquivo:{0} as {1}", filename, data);
-                writer.WriteLine(@"Upload de Arquivo:{0} as {1}", filename, data);
+                Console.WriteLine(@"Upload de Arquivo:{0} as {1}", filename, DateTime.Now.ToString("dd-MM/H:mm"));
+                writer.WriteLine(@"Upload de Arquivo:{0} as {1}", filename, DateTime.Now.ToString("dd-MM/H:mm"));
             }
 
         }
