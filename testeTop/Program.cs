@@ -46,7 +46,7 @@ namespace testeTop
         }
        
 
-        public void MetMonitorar()
+        public void NetMonitorar()
         {
 
             
@@ -159,7 +159,7 @@ namespace testeTop
         public void Start()
         {
 
-            MetMonitorar();
+            NetMonitorar();
 
         }
 
