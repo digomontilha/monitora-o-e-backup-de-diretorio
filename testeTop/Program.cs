@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Timers;
 
 using Topshelf;
 
@@ -39,20 +35,20 @@ namespace testeTop
     public class TownCrier
     {
 
-        private readonly CancellationTokenSource _cancellationTokenSource;
+        
         public TownCrier()
         {
-            _cancellationTokenSource = new CancellationTokenSource();
+           
         }
        
 
         public void NetMonitorar()
         {
 
-            
+           
 
-            //pasta com os arquivos a serem verificados
-            string pathFiles = @"C:\LOG";
+                //pasta com os arquivos a serem verificados
+                string pathFiles = @"C:\LOG";
             //Console.WriteLine(pathFiles);
 
             //Objeto para minutoração da pasta
@@ -168,13 +164,12 @@ namespace testeTop
         public void Stop()
         {
 
-            var processes = Process.GetProcessesByName("testeTop");
+            var processes = Process.GetProcessesByName("testeTop.vshost");
             foreach (var p in processes)
             p.Kill();
 
 
-            _cancellationTokenSource.Cancel();
-            _cancellationTokenSource.Dispose();
+            
         }
 
        
