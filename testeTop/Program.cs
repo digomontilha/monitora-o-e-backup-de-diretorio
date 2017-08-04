@@ -76,7 +76,7 @@ namespace testeTop
             /*Verificar arquivo e enviar para ftp
             Upload de arquivo as 23:00
             Verificar data do servidor*/
-            string horarioDeterminado = "14:35";
+            string horarioDeterminado = "00:00";
             
 
             while (true)
@@ -164,7 +164,7 @@ namespace testeTop
         public void Stop()
         {
 
-            var processes = Process.GetProcessesByName("testeTop.vshost");
+            var processes = Process.GetProcessesByName("testeTop");
             foreach (var p in processes)
             p.Kill();
 
