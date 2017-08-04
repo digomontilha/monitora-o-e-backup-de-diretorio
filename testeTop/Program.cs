@@ -53,7 +53,7 @@ namespace testeTop
 
             //pasta com os arquivos a serem verificados
             string pathFiles = @"C:\LOG";
-            Console.WriteLine(pathFiles);
+            //Console.WriteLine(pathFiles);
 
             //Objeto para minutoração da pasta
             FileSystemWatcher Monitorar = new FileSystemWatcher();
@@ -85,7 +85,7 @@ namespace testeTop
 
             while (true)
             {
-                Console.WriteLine(DateTime.Now.ToString("H:mm"));
+              //  Console.WriteLine(DateTime.Now.ToString("H:mm"));
 
                 //verificar se pastas backup existe
                 if (false == File.Exists(pathFiles + @"\backup"))
@@ -103,9 +103,9 @@ namespace testeTop
                         
                         string file = Path.GetFileName(item);
                         string arquivoDestino = pathFiles + @"\backup\" +DateTime.Now.ToString("ddMM-Hmmss") + file;
-                        Console.WriteLine(item);
-                        Console.WriteLine(file);
-                        Console.WriteLine(arquivoDestino);
+                        //Console.WriteLine(item);
+                        //Console.WriteLine(file);
+                        //Console.WriteLine(arquivoDestino);
                         //EnviarArquivoFtp("ftp://172.", "TheUserName", "ThePassword", item);
                         File.Move(item, arquivoDestino);
 
@@ -124,7 +124,7 @@ namespace testeTop
         private static void OnChanged(object source, FileSystemEventArgs e)
         {
             StreamWriter escrever = new StreamWriter("log.log", true);
-            Console.WriteLine(@"Arquivo: {0}, Evento: {1}, Data: {2}", e.FullPath, e.ChangeType, DateTime.Now.ToString("dd-MM/H:mm"));
+            //Console.WriteLine(@"Arquivo: {0}, Evento: {1}, Data: {2}", e.FullPath, e.ChangeType, DateTime.Now.ToString("dd-MM/H:mm"));
             escrever.WriteLine(@"Arquivo: {0}, Evento: {1}, Data: {2}", e.FullPath, e.ChangeType, DateTime.Now.ToString("dd-MM/H:mm"));
             escrever.Close();
 
@@ -135,7 +135,7 @@ namespace testeTop
            StreamWriter escrever = new StreamWriter("log.log", true);
            
 
-           Console.WriteLine(@"Arquivo: {0} alterou para {1}, Data:{2}", e.OldFullPath, e.FullPath, DateTime.Now.ToString("dd-MM/H:mm"));
+           //Console.WriteLine(@"Arquivo: {0} alterou para {1}, Data:{2}", e.OldFullPath, e.FullPath, DateTime.Now.ToString("dd-MM/H:mm"));
            escrever.WriteLine(@"Arquivo: {0} alterou para {1}, Data:{2}", e.OldFullPath, e.FullPath, DateTime.Now.ToString("dd-MM/H:mm"));
            escrever.Close();
         }
