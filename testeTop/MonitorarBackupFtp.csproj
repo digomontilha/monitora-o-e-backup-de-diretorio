@@ -7,8 +7,8 @@
     <ProjectGuid>{7A0D7760-3C91-44ED-A829-D4EEB57FDA27}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>testeTop</RootNamespace>
-    <AssemblyName>testeTop</AssemblyName>
+    <RootNamespace>MoBaFtp</RootNamespace>
+    <AssemblyName>MoBaFtp</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

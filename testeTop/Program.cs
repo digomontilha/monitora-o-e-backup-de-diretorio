@@ -24,8 +24,8 @@ namespace MoBaFtp
                 x.RunAsLocalSystem();                            
 
                 x.SetDescription("Monitoração de pasta e envio via ftp");        
-                x.SetDisplayName("Montirar");                       
-                x.SetServiceName("Montirar");                       
+                x.SetDisplayName("MoBaFtp");                       
+                x.SetServiceName("MoBaFtp");                       
             });                                                       
 
         }
@@ -164,7 +164,7 @@ namespace MoBaFtp
         public void Stop()
         {
 
-            var processes = Process.GetProcessesByName("testeTop");
+            var processes = Process.GetProcessesByName("MoBaFtp");
             foreach (var p in processes)
             p.Kill();
 
