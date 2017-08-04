@@ -2,10 +2,10 @@
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
-
 using Topshelf;
 
-namespace testeTop
+namespace MoBaFtp
+
 {
     class Program
     {
