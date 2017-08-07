@@ -76,7 +76,7 @@ namespace MoBaFtp
             /*Verificar arquivo e enviar para ftp
             Upload de arquivo as 23:00
             Verificar data do servidor*/
-            string horarioDeterminado = "00:00";
+            string horarioDeterminado = "10:41";
             
 
             while (true)
@@ -98,12 +98,13 @@ namespace MoBaFtp
                         
                         
                         string file = Path.GetFileName(item);
-                        string arquivoDestino = pathFiles + @"\backup\" +DateTime.Now.ToString("ddMM-Hmmss") + file;
+                        string arquivoDestino = pathFiles + @"\backup\" +DateTime.Now.ToString("ddMM-Hmm-s-") + file;
                         //Console.WriteLine(item);
                         //Console.WriteLine(file);
                         //Console.WriteLine(arquivoDestino);
                         //EnviarArquivoFtp("ftp://172.", "TheUserName", "ThePassword", item);
                         File.Move(item, arquivoDestino);
+                        Thread.Sleep(1000);
 
                         StreamWriter escrever = new StreamWriter("backup.log", true);
                         escrever.WriteLine(@"arquivo movido para backup: {0} renomeado para: {1}", item ,arquivoDestino);
@@ -164,7 +165,7 @@ namespace MoBaFtp
         public void Stop()
         {
 
-            var processes = Process.GetProcessesByName("MoBaFtp");
+            var processes = Process.GetProcessesByName("MoBaFtp.vshost");
             foreach (var p in processes)
             p.Kill();
 
