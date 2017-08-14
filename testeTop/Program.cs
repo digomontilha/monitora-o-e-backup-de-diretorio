@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using Topshelf;
+using Tamir.SharpSsh;
+using Renci.SshNet;
 
 namespace MoBaFtp
 
@@ -25,7 +27,8 @@ namespace MoBaFtp
 
                 x.SetDescription("Monitoração de pasta e envio via ftp");        
                 x.SetDisplayName("MoBaFtp");                       
-                x.SetServiceName("MoBaFtp");                       
+                x.SetServiceName("MoBaFtp"); 
+                                      
             });                                                       
 
         }
@@ -44,11 +47,10 @@ namespace MoBaFtp
 
         public void NetMonitorar()
         {
-
-           
-
-                //pasta com os arquivos a serem verificados
-                string pathFiles = @"C:\LOG";
+            //pasta com os arquivos a serem verificados
+            //string pathFiles = @"\\ppspdb01\FileChange\Abbott";
+             
+             string pathFiles = @"C:\LOG";
             //Console.WriteLine(pathFiles);
 
             //Objeto para minutoração da pasta
@@ -76,7 +78,7 @@ namespace MoBaFtp
             /*Verificar arquivo e enviar para ftp
             Upload de arquivo as 23:00
             Verificar data do servidor*/
-            string horarioDeterminado = "10:41";
+            string horarioDeterminado = "10:14";
             
 
             while (true)
@@ -84,11 +86,11 @@ namespace MoBaFtp
               //  Console.WriteLine(DateTime.Now.ToString("H:mm"));
 
                 //verificar se pastas backup existe
-                if (false == File.Exists(pathFiles + @"\backup"))
-                {
-                    // cria a pasta backup
-                    Directory.CreateDirectory(pathFiles + @"\backup");
-                }
+                //if (false == File.Exists(pathFiles + @"\backup"))
+                //{
+                //    // cria a pasta backup
+                //    Directory.CreateDirectory(pathFiles + @"\backup");
+                //}
 
                 while (horarioDeterminado == DateTime.Now.ToString("H:mm"))
                  {
@@ -98,13 +100,20 @@ namespace MoBaFtp
                         
                         
                         string file = Path.GetFileName(item);
-                        string arquivoDestino = pathFiles + @"\backup\" +DateTime.Now.ToString("ddMM-Hmm-s-") + file;
+                        string arquivoDestino = @"C:\LOG\backup\" + DateTime.Now.ToString("ddMM-Hmm-s-") + item;
+
+                        status = EnviarArquivoFtp("172.16.101.13", "abtt.sftp", "ThePassword", "", item);
+                        if (status == true)
+                        {
+                            File.Move(item, arquivoDestino);
+                        }
                         //Console.WriteLine(item);
                         //Console.WriteLine(file);
                         //Console.WriteLine(arquivoDestino);
-                        //EnviarArquivoFtp("ftp://172.", "TheUserName", "ThePassword", item);
-                        File.Move(item, arquivoDestino);
-                        Thread.Sleep(1000);
+                        
+                        Thread.Sleep(10000);
+                        
+                        
 
                         StreamWriter escrever = new StreamWriter("backup.log", true);
                         escrever.WriteLine(@"arquivo movido para backup: {0} renomeado para: {1}", item ,arquivoDestino);
@@ -137,19 +146,63 @@ namespace MoBaFtp
            escrever.Close();
         }
 
-
-        public void EnviarArquivoFtp(string ftpServer, string userName, string password, string filename)
+        public bool status;
+        public bool EnviarArquivoFtp(string ftpServer, string userName, string password, string filename, string path)
         {
-            using (System.Net.WebClient client = new System.Net.WebClient())
-            {
-                client.Credentials = new System.Net.NetworkCredential(userName, password);
-                client.UploadFile(ftpServer + "/" + new FileInfo(filename).Name, "STOR", filename);
-                StreamWriter writer = new StreamWriter("arquivos.log", true);
-              
+         
 
-                Console.WriteLine(@"Upload de Arquivo:{0} as {1}", filename, DateTime.Now.ToString("dd-MM/H:mm"));
-                writer.WriteLine(@"Upload de Arquivo:{0} as {1}", filename, DateTime.Now.ToString("dd-MM/H:mm"));
+            try
+            {
+                using (SftpClient client = new SftpClient(ftpServer, 115, userName, password))
+                {
+                    string workingdirectory = "/highway/hell";
+                    FileInfo f = new FileInfo(path);
+                    string uploadfile = f.FullName;
+                    
+                    client.Connect();
+                    if (client.IsConnected)
+                    {
+                        Console.WriteLine("Conectado");
+                    }
+
+                    var fileStream = new FileStream(uploadfile, FileMode.Open);
+                    if (fileStream != null)
+                    {
+                        Console.WriteLine("Não é null");
+                    }
+                    client.BufferSize = 4 * 1024;
+                    client.ChangeDirectory(workingdirectory);
+                    client.UploadFile(fileStream, f.Name, null);
+                    client.Disconnect();
+                    client.Dispose();
+
+
+                    StreamWriter writer = new StreamWriter("arquivos.log", true);
+
+
+                    Console.WriteLine(@"Upload de Arquivo:{0} as {1}", filename, DateTime.Now.ToString("dd-MM-H:mm"));
+                    writer.WriteLine(@"Upload de Arquivo:{0} as {1}", filename, DateTime.Now.ToString("dd-MM-H:mm"));
+
+
+
+                    status = true;
+                    
+                }
             }
+            catch (Exception e)
+            {
+                if (e.Message != null)
+                {
+                    StreamWriter writer = new StreamWriter("arquivos.log", true);
+                    Console.WriteLine(@"Erro: {0} , data: {1}", e.Message, DateTime.Now.ToString("dd-MM-H:mm"));
+                    writer.WriteLine(@"Erro: {0} , data: {1}", e.Message, DateTime.Now.ToString("dd-MM-H:mm"));
+                    status = false;
+                    
+                }
+                    
+            }
+
+            return (status);
 
         }
 
